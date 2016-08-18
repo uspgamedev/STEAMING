@@ -1,3 +1,3 @@
 # STEAMING (with LÖVE)
 
-STEAMING (with LÖVE) is a __s__imple __te__mpl__a__te for __m__ak__in__g __g__ames with LÖVE2D.
+STEAMING (with LÖVE) is a __s__ imple __te__ mpl __a__ te for __m__ ak __in__ g __g__ ames with LÖVE2D.
