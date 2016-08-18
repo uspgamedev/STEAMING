@@ -60,9 +60,12 @@ ELEMENT = Class{
     end
 }
 
+-------------------
+--CHARACTERISTICS-- 
+-------------------
+
 --Positionable: has a x and y position
 POS = Class{
-    __includes = ELEMENT,
     init = function(self, _x, _y) --Set position for object
         self.x = _x or 0 --X position
         self.y = _y or 0 --Y position
@@ -85,9 +88,27 @@ CLR = Class{
     end
 }
 
+--With-Text: the object has a text
+WTXT = Class{
+    init = function(self, _text, _font, _t_color) --Set circle's atributes
+        self.text = _text or "sample" --This object text
+        self.font = _font             --This object text font
+        self.t_color = RGB(0,0,0)     --This object text color
+        if _text_color then Rgb.copy(self.t_color, _t_color) end
+    end,
+
+    setTextColor = function(self, _c) --Set object's text color
+        Rgb.copy(self.t_color, _c)
+    end
+}
+
+----------
+--SHAPES-- 
+----------
+
 --Rectangle: is a positionable and colorful object with width and height
 RECT = Class{
-    __includes = {POS, CLR},
+    __includes = {ELEMENT, POS, CLR},
     init = function(self, _x, _y, _w, _h, _c) --Set rectangle's atributes
         POS.init(self, _x, _y)
         self.w = _w or 10
@@ -113,19 +134,5 @@ CIRC = Class{
 
     resize = function(self, _r) --Change radius
         self.r = _r
-    end
-}
-
---With-Text: the object has a text
-WTXT = Class{
-    init = function(self, _text, _font, _t_color) --Set circle's atributes
-        self.text = _text or "sample" --This object text
-        self.font = _font             --This object text font
-        self.t_color = RGB(0,0,0)     --This object text color
-        if _text_color then Rgb.copy(self.t_color, _t_color) end
-    end,
-
-    setTextColor = function(self, _c) --Set object's text color
-        Rgb.copy(self.t_color, _c)
     end
 }
