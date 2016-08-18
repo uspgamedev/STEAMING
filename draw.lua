@@ -40,13 +40,5 @@ function DrawTable(t)
 
 end
 
-
----------------------------------
---DRAWING-TABLE MANAGER FUNCTIONS
----------------------------------
-
-function draw.findId()
-end
-
 --Return functions
 return draw

@@ -9,9 +9,11 @@ local primitive = {}
 --Element: has a type, subtype and id
 ELEMENT = Class{
     init = function(self, _tp, _subtp, _id)
-        tp = _tp        --Type this element belongs to
-        subtp = _subtp  --Subtype this element belongs to, if any
-        id = _id        --Id of this element, if any
+        tp = _tp          --Type this element belongs to
+        subtp = _subtp    --Subtype this element belongs to, if any
+        id = _id          --Id of this element, if any
+        exception = false --If this object is not to be removed when clearing tables
+        invisible = false --If this object is not to be draw
     end,
     
     setId = function(self, _id) --Sets id for this element, and add it to a ID table for quick lookup
@@ -38,7 +40,7 @@ ELEMENT = Class{
         SUBTP_T[self.subtp][self] = true
     end,
 
-    destroy = function(self, t) --Destroy this element from all tables (quicker if you send his drawable table)
+    destroy = function(self, t) --Destroy this element from all tables (quicker if you send his drawable table, if he has one)
         setSubTp(self, nil) --Removes from Id table, if its in one
         setId(self, nil) --Removes from Subtype table, if its in one
         if t then
@@ -110,6 +112,7 @@ WTXT = Class{
 RECT = Class{
     __includes = {ELEMENT, POS, CLR},
     init = function(self, _x, _y, _w, _h, _c) --Set rectangle's atributes
+        ELEMENT.init(self)
         POS.init(self, _x, _y)
         self.w = _w or 10
         self.h = _h or 10
@@ -127,6 +130,7 @@ RECT = Class{
 CIRC = Class{
     __includes = {POS, CLR},
     init = function(self, _x, _y, _r, _c) --Set circle's atributes
+        ELEMENT.init(self)
         POS.init(self, _x, _y)
         self.r = _r or 10
         CLR.init(self, _c)

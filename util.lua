@@ -17,27 +17,67 @@ function util.clearTable(T, mode)
     if not T then return end --If table is empty
     
     --Clear T table
-    for i, k in pairs (T) do
-        exc = k.exception
+    for o in pairs (T) do
+        exc = o.exception
         if mode == "force" or not exc then --Don't erase exceptions
         	if exc ~= nil and mode == "remove" then exc = false end
-            T[i] = nil
+            o:destroy()
         end
     end
 
 end
 
---Clear all Drawable Tables with an optional argument mode:
+--Clear all Drawable Tables (and respective Id/Subtype tables) with an optional argument mode:
 --  mode == "force": clear all tables, ignoring exceptions
 --  mode == "remove": apply all exceptions, but removes them afterwards
 --  else, just apply exceptions normally and keep them as they are
-function util.clearAllDrawTables(mode)
+function util.clearAllTables(mode)
     
     for i, t in ipairs(D_T) do
         util.clearTable(t, mode)
     end
 
 end
+
+--------------
+--FIND OBJECTS
+--------------
+
+--Find an object based on an id
+function util.findId(id)
+    return ID_T[id]
+end
+
+--Find a set of objects based on a subtype
+function util.findSubtype(subtp)
+    return SUBTP_T[subtp]
+end
+
+-----------------
+--DESTROY OBJECTS
+-----------------
+
+--Delete an object based on an id
+function util.destroyId(id)
+    if ID_T[id] then ID_T[id]:destroy() end 
+end
+
+--Delete a set of objects based on a subtype
+function util.destroySubtype(subtp)
+    if SUBTP_T[subtp] then
+        for o in pairs do
+            SUBTP_T[subtp][o]:destroy()
+        end 
+    end
+end
+
+---------------------------
+--APPLY EXCEPTION FUNCTIONS
+---------------------------
+
+---------------------------
+--APPLY INVISIBLE FUNCTIONS
+---------------------------
 
 --------------------
 --GLOBAL FUNCTIONS
