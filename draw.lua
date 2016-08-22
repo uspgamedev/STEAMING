@@ -33,9 +33,11 @@ end
 function DrawTable(t)
 
     for o in pairs(t) do
-        love.graphics.setShader(o.shader) --Set object shader, if any
-        o:draw() --Call the object respective draw function
-        love.graphics.setShader() --Remove shader, if any
+        if not o.invisible then
+          love.graphics.setShader(o.shader) --Set object shader, if any
+          o:draw() --Call the object respective draw function
+          love.graphics.setShader() --Remove shader, if any
+        end
     end
 
 end

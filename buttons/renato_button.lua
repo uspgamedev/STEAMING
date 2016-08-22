@@ -2,6 +2,7 @@ local Rgb = require "classes.rgb"
 
 --FUNCTION FOR RENATO_BUTTON--
 
+--Changes randomly between 3 colors
 function func(self)
     print(self.tp, self.subtp, self.id)
     if math.random() > .66 then

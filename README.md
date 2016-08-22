@@ -1,4 +1,4 @@
-# STEAMING (with LÖVE)
+# STEAMING (with LÖVE) ver 1.0.0
 
 ### What is this?
 
@@ -16,9 +16,56 @@ If you don't want to read this readme, just go ahead and dive in the clean templ
 
 ### Drawing Stuff
 
+``` lua
+DRAW_TABLE = {
+L1 = {}, --Layer 1 (bottom layer, first to draw)
+L2 = {}, --Layer 2
+L3 = {}, --Layer 3
+L4 = {}, --Layer 4
+L5 = {}, --Layer 5
+L6 = {}  --Layer 6 (top layer, last to draw)
+}
+
+--Draws every drawable object from all tables
+function draw.allTables()
+
+    DrawTable(DRAW_TABLE.L1)
+
+    DrawTable(DRAW_TABLE.L2)
+
+    CAM:attach() --Start tracking camera
+
+    DrawTable(DRAW_TABLE.L3)
+
+    DrawTable(DRAW_TABLE.L4)
+
+    DrawTable(DRAW_TABLE.L5)
+
+    CAM:detach() --Stop tracking camera
+
+    DrawTable(DRAW_TABLE.L6)
+
+end
+
+--Draw all the elements in a table
+function DrawTable(t)
+
+    for o in pairs(t) do
+        if not o.invisible then
+          love.graphics.setShader(o.shader) --Set object shader, if any
+          o:draw() --Call the object respective draw function
+          love.graphics.setShader() --Remove shader, if any
+        end
+    end
+
+end
+```
+
 All the drawing made in your project will be made by Drawing Tables. Those are several tables you can add to the global **DRAW_TABLE** table. In every draw loop, your current gamestate should iterate through all **DRAW_TABLE** tables (done by the method **allTables()** in the *draw* module), and draw all elements inside those tables that are not "invisible" (see **Objects** section below). This way you can easily distribute your visual elements in layers and have them being draw in the order you desire. Another useful function is **DRAW_TABLE(t)**, which draws all elements in a single table t.
 
 If you are using HUMP's awesome camera functions, you can attach or detach the camera during the steps of the DrawAll to apply translation effects only in certain layers, but keeping others, such as your GUI layer untouched.
+
+You can change the name of the tables if you desire to be more explicit, such as renaming your last layer to "GUI" and your first to "BG". Also, by default there are 6 layers, but you can easily change this to whatever is best for you.
 
 But how do we draw each different element in the Drawing Tables? That's where HUMP's classes come in!
 
@@ -41,3 +88,11 @@ For doubts on how to use classes, read the [documentation](http://hump.readthedo
 HUMP already has everything you'd (probably) need for gamestates, such as changing from one another, and calling the respective callbacks functions. Read more in the [documentation](http://hump.readthedocs.io/en/latest/gamestate.html).
 
 When changing between gamestates, you'll probably want to delete all the draw elements, or at least most of them. To do that you can just call the method *clearAllTables()* in the *util* module, that will clear all elements, including from id's or subtype tables. But if you don't want some objects to be deleted, just use the exceptions methods from the *util* module, to add exceptions to single elements, or even a whole subtype of them. This help you to re-use objects and stop wasting time re-creating them each time you jump from gamestates.
+
+### Useful stuff
+
+There are already some useful classes implemented, such as *rgb* for color manipulation and buttons (by the fault its a rectangle with some text). Feel free to edit and change any files as you desire to better suit your project :)
+
+### How to use
+
+You can fork the repository and use the way you like. If there is a big update on the template, you can re-base your repository, but be careful not to lose specific changes you've made.
