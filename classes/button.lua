@@ -49,7 +49,7 @@ function button.checkCollision(x,y)
     if BUTTON_LOCK then return end --If buttons are locked, does nothing
 
     --Iterate on drawable buttons table
-    for _,t in pairs(D_T) do
+    for _,t in pairs(DRAW_TABLE) do
         for b in pairs(t) do
             if  b.tp == "button"
                 and

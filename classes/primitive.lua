@@ -15,29 +15,29 @@ ELEMENT = Class{
         exception = false --If this object is not to be removed when clearing tables
         invisible = false --If this object is not to be draw
     end,
-    
+
     setId = function(self, _id) --Sets id for this element, and add it to a ID table for quick lookup
         if self.id then
-            ID_T[self.id] = nil --Delete previous Id element
+            ID_TABLE[self.id] = nil --Delete previous Id element
         end
         self.id = _id
         if not _id then return end --If nil, just remove
-        ID_T[_id] = self
+        ID_TABLE[_id] = self
     end,
 
     setSubTp = function(self, _subtp) --Sets subtype for this element, and add it to respective subtype table for quick lookup
         if self.subtp then
-            SUBTP_T[self.subtp][self] = nil --Delete previous subtype this element had
-            if #SUBTP_T[self.subtp] == 0 then
-                SUBTP_T[self.subtp] = nil   --If no more elements of this subtype, delete the table
+            SUBTP_TABLE[self.subtp][self] = nil --Delete previous subtype this element had
+            if #SUBTP_TABLE[self.subtp] == 0 then
+                SUBTP_TABLE[self.subtp] = nil   --If no more elements of this subtype, delete the table
             end
         end
         self.subtp = _subtp
         if not _subtp then return end  --If nil, just remove element
-        if not SUBTP_T[self.subtp] then
-            SUBTP_T[self.subtp] = {} --Creates subtype table if it didn't exist
+        if not SUBTP_TABLE[self.subtp] then
+            SUBTP_TABLE[self.subtp] = {} --Creates subtype table if it didn't exist
         end
-        SUBTP_T[self.subtp][self] = true
+        SUBTP_TABLE[self.subtp][self] = true
     end,
 
     destroy = function(self, t) --Destroy this element from all tables (quicker if you send his drawable table, if he has one)
@@ -46,7 +46,7 @@ ELEMENT = Class{
         if t then
             t[self] = nil --If you provide the  drawable table, removes from it quicker
         else
-            for _,tb in pairs(D_T) do--Iterates in all drawable tables and removes element
+            for _,tb in pairs(DRAW_TABLE) do--Iterates in all drawable tables and removes element
                 if tb[self] then
                     tb[self] = nil
                     return
@@ -58,12 +58,12 @@ ELEMENT = Class{
     addElement = function(self, t, subtp, id) --Add element to a t drawable table, and if desired, adds a subtype and/or id
         if subtp then self:setSubTp(subtp) end
         if id then self:setId(id) end
-        t[self] = true  
+        t[self] = true
     end
 }
 
 -------------------
---CHARACTERISTICS-- 
+--CHARACTERISTICS--
 -------------------
 
 --Positionable: has a x and y position
@@ -105,7 +105,7 @@ WTXT = Class{
 }
 
 ----------
---SHAPES-- 
+--SHAPES--
 ----------
 
 --Rectangle: is a positionable and colorful object with width and height

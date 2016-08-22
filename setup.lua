@@ -12,20 +12,20 @@ function setup.config()
 
     --IMAGES--
     --PIXEL = love.graphics.newImage("assets/pixel.png") --Example image
-   
+
     --RANDOM SEED--
     love.math.setRandomSeed( os.time() )
 
     --GLOBAL VARIABLES--
     DEBUG = true --DEBUG mode status
     BUTTON_LOCK = false --Blocks buttons to be pressed
-            
+
     --TIMERS--
     Game_Timer = Timer.new()  --Timer for all game-related timing stuff
 
     --INITIALIZING TABLES--
     --Drawing Tables
-    D_T = {
+    DRAW_TABLE = {
     L1 = {}, --Layer 1 (bottom layer, first to draw)
     L2 = {}, --Layer 2
     L3 = {}, --Layer 3
@@ -35,18 +35,18 @@ function setup.config()
     }
 
     --Other Tables
-    SUBTP_T = {} --Table with tables for each subtype (for fast lookup)
-    ID_T = {} --Table with elements with Ids (for fast lookup)
+    SUBTP_TABLE = {} --Table with tables for each subtype (for fast lookup)
+    ID_TABLE = {} --Table with elements with Ids (for fast lookup)
 
     --WINDOW CONFIG--
     success = love.window.setMode(500, 500, {borderless = not DEBUG})
-     
+
     --FONT CONFIG--
     my_font = love.graphics.newFont("assets/fonts/vanadine_bold.ttf", 20)
 
     --CAMERA--
     CAM = Camera(love.graphics.getWidth()/2, love.graphics.getHeight()/2) --Set camera position to center of screen
-   
+
     --SHADERS--
     --Example shader for drawing glow effect
     Glow_Shader = love.graphics.newShader[[
@@ -66,5 +66,5 @@ function setup.config()
     ]]
 end
 
---Return functions 
+--Return functions
 return setup

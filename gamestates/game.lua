@@ -14,7 +14,7 @@ function state:enter()
     local b
 
     b = But(10, 10, 200, 300, Rgb.orange(), but1, "FRANKIE SAYS RENATO", my_font)
-    b:addElement(D_T.L1, "big_buttons", "renato_button")
+    b:addElement(DRAW_TABLE.L1, "big_buttons", "renato_button")
 
 end
 
