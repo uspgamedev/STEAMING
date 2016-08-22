@@ -2,7 +2,7 @@
 
 ### What is this?
 
-*STEAMING (with LÖVE)* is a ***s***imple ***te***mpl***a***te for ***m***ak***in***g ***g***ames with *LÖVE2D*. This README is a quick guide to understand some components of this template, and how to use it.
+*STEAMING (with LÖVE)* is a **s**imple **te**mpl**a**te for **m**ak**in**g **g**ames with *LÖVE2D*. This README is a quick guide to understand some components of this template, and how to use it.
 
 Downloading  the clean template, you already have folders, tables and a whole enviroment ready, improving those slow first steps when creating a game. *STEAMING* most useful aspect is the drawing method (further explained below) that is already organized, filled with useful methods, to facilitate your life managing objects on or offscreen, and an easy way to create and handle objects in your game.
 
@@ -10,7 +10,7 @@ Downloading the example template, you can see a simple "game" to show all those 
 
 *STEAMING* uses [*HUMP*](http://hump.readthedocs.io/en/latest/), a really awesome library for *LÖVE* that already has classes, timers, gamestates, camera and several other useful stuff implemented. Really recommend reading their documentation a bit to better understand *STEAMING* (and to improve your life!).
 
-### TOO LONG, DONT WANT TO READ
+### TOO LONG, DON'T WANT TO READ
 
 If you don't want to read this readme, just go ahead and dive in the clean template or the example template. Both are well documented (or so I hope...), and are made to be easily understood. You can check this README or other READMEs in the template for further explanations anytime you need (don't forget the [*HUMP* documentation](http://hump.readthedocs.io/en/latest/) as well). For a little more indepth of the template, just continue reading.
 

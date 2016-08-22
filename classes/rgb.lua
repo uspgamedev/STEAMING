@@ -45,19 +45,16 @@ function rgb.setTransp(c) love.graphics.setColor(c.r, c.g, c.b, 0) end
 function rgb.black() return RGB(0,0,0) end
 
 --Clean white
-function rgb.white() return RGB() end
-
---Invisible transparent
-function rgb.transp() return RGB(0,0,0,0) end
+function rgb.white() return RGB(255,255,255) end
 
 --Cheerful red
-function rgb.red() return RGB(240,41,74) end
+function rgb.r() return RGB(240,41,74) end
 
 --Calm green
-function rgb.green() return RGB(99,247,92) end
+function rgb.g() return RGB(99,247,92) end
 
 --Smooth blue
-function rgb.blue() return RGB(25,96,209) end
+function rgb.b() return RGB(25,96,209) end
 
 --Jazzy orange
 function rgb.orange() return RGB(247,154,92) end
@@ -70,6 +67,9 @@ function rgb.purple() return RGB(142,62,240) end
 
 --Happy pink
 function rgb.pink() return RGB(242,85,195) end
+
+--Invisible transparent
+function rgb.transp() return RGB(0,0,0) end
 
 --Return functions
 return rgb
