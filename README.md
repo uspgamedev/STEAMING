@@ -63,13 +63,59 @@ end
 
 All the drawing made in your project will be made by Drawing Tables. Those are several tables you can add to the global **DRAW_TABLE** table. In every draw loop, your current gamestate should iterate through all **DRAW_TABLE** tables (done by the method **allTables()** in the *draw* module), and draw all elements inside those tables that are not "invisible" (see **Objects** section below). This way you can easily distribute your visual elements in layers and have them being draw in the order you desire. Another useful function is **DRAW_TABLE(t)**, which draws all elements in a single table t.
 
-If you are using HUMP's awesome camera functions, you can attach or detach the camera during the steps of the DrawAll to apply translation effects only in certain layers, but keeping others, such as your GUI layer untouched.
+If you are using HUMP's awesome camera functions, you can attach or detach the camera during the steps of the **allTable()** method to apply translation effects only in certain layers, but keeping others, such as your *GUI* layer untouched.
 
-You can change the name of the tables if you desire to be more explicit, such as renaming your last layer to "GUI" and your first to "BG". Also, by default there are 6 layers, but you can easily change this to whatever is best for you.
+You can change the name of the tables to be more explicit, such as renaming your last layer to *GUI* and your first to *BG*. Also, by default there are 6 layers, but you can easily change this to whatever is best for you.
 
-But how do we draw each different element in the Drawing Tables? That's where HUMP's classes come in!
+But how do we draw each different element in the Drawing Tables? That's where *HUMP*'s classes come in!
 
 ### Objects
+
+```lua
+--Element: has a type, subtype and id
+ELEMENT = Class{
+    init = function(self, _tp, _subtp, _id)
+        tp = _tp          --Type this element belongs to
+        subtp = _subtp    --Subtype this element belongs to, if any
+        id = _id          --Id of this element, if any
+        exception = false --If this object is not to be removed when clearing tables
+        invisible = false --If this object is not to be draw
+    end,
+
+    --other methods here--
+}
+
+--Positionable: has a x and y position
+POS = Class{
+    init = function(self, _x, _y) --Set position for object
+        self.x = _x or 0 --X position
+        self.y = _y or 0 --Y position
+    end,
+
+    setPos = function(self, _x, _y) --Set position for object
+        self.x, self.y = _x, _y
+    end
+}
+
+--Rectangle: is a positionable and colorful object with width and height
+RECT = Class{
+    __includes = {ELEMENT, POS, CLR},
+    init = function(self, _x, _y, _w, _h, _c) --Set rectangle's atributes
+        ELEMENT.init(self)
+        POS.init(self, _x, _y)
+        self.w = _w or 10
+        self.h = _h or 10
+        CLR.init(self, _c)
+    end,
+
+    resize = function(self, _w, _h) --Change width/height
+        self.w = _w
+        self.h = _h
+    end
+
+}
+
+```
 
 *STEAMING* is very friendly to object oriented programming. All your game objects should be instantiated from a class, and those can be organized in the *classes* folder. To draw an object, you specify as a class method his *draw()* method, so that all objects are drawn the way you want them to.
 
@@ -84,6 +130,45 @@ Lastly, you can easily delete an object *o* from all tables with *o:destroy()* o
 For doubts on how to use classes, read the [documentation](http://hump.readthedocs.io/en/latest/class.html).
 
 ### Gamestates
+
+```lua
+--Called when entering this gamestate
+function state:enter()
+    local b --button to be created
+    local p -- player to be created
+
+    --      x   y  width height  color        function     text     font
+    b = But(10, 10, 200, 300, Rgb.orange(), exitfunction, "QUIT", my_font)
+    --Add the button to the "GUI" Draw Table, with subtype "gui" and id "ext"
+    b:addElement(DRAW_TABLE.GUI, "gui", "ext")
+    --          x   y   hp
+    p = Player(20, 20, 100)
+    --Add the player to the L3 Draw Table, with id "main_character"
+    p:addElement(DRAW_TABLE.L3, nil , "main_character")
+
+end
+
+--Called when leaving this gamestate
+function state:leave()
+
+    Util.clearAllTables() --Remove all elements without exception
+
+end
+
+--Called every frame, use for logical stuff
+function state:update(dt)
+
+    Player.update()
+
+end
+
+--Called every framed, used to draw stuff
+function state:draw()
+
+    Draw.allTables()
+
+end
+```
 
 HUMP already has everything you'd (probably) need for gamestates, such as changing from one another, and calling the respective callbacks functions. Read more in the [documentation](http://hump.readthedocs.io/en/latest/gamestate.html).
 
