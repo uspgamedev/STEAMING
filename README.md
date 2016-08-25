@@ -2,17 +2,17 @@
 
 ### What is this?
 
-*STEAMING (with LÖVE)* is a **s**imple **te**mpl**a**te for **m**ak**in**g **g**ames with *LÖVE2D*. This README is a quick guide to understand some components of this template, and how to use it.
+*STEAMING (with LÖVE)* is a ***S***imple ***TE***mpl***A***te for ***M***ak***IN***g ***G***ames (with *LÖVE2D*). This *README* is a quick guide to understand some components of this template, and how to use it.
 
 Downloading  the clean template, you already have folders, tables and a whole enviroment ready, improving those slow first steps when creating a game. *STEAMING* most useful aspect is the drawing method (further explained below) that is already organized, filled with useful methods, to facilitate your life managing objects on or offscreen, and an easy way to create and handle objects in your game.
 
-Downloading the example template, you can see a simple "game" to show all those elements in action, and the recommended way to use *STEAMING*'s full potential.
+Downloading the *example_template*, you can see a simple "game" to show all those elements in action, and the recommended way to use *STEAMING*'s full potential. The *clean_template* is alot more minimalistic and only have the
 
 *STEAMING* uses [*HUMP*](http://hump.readthedocs.io/en/latest/), a really awesome library for *LÖVE* that already has classes, timers, gamestates, camera and several other useful stuff implemented. Really recommend reading their documentation a bit to better understand *STEAMING* (and to improve your life!).
 
 ### TOO LONG, DON'T WANT TO READ
 
-If you don't want to read this readme, just go ahead and dive in the clean template or the example template. Both are well documented (or so I hope...), and are made to be easily understood. You can check this *README* or other *READMEs* in the template for further explanations anytime you need (don't forget the [*HUMP* documentation](http://hump.readthedocs.io/en/latest/) as well). For a little more indepth of the template, just continue reading.
+If you don't want to read this *README*, just go ahead and dive in the *clean_template* or the *example_template*. Both are well documented (or so I hope...), and are made to be easily understood. You can check this *README* or other *READMEs* in the template for further explanations anytime you need (don't forget the [*HUMP* documentation](http://hump.readthedocs.io/en/latest/) as well). For a little more indepth of the template, just continue reading.
 
 ### Drawing Stuff
 
@@ -61,7 +61,7 @@ function DrawTable(t)
 end
 ```
 
-All the drawing made in your project will be made by Drawing Tables. Those are several tables you can add to the global **DRAW_TABLE** table. In every draw loop, your current gamestate should iterate through all **DRAW_TABLE** tables (done by the method **allTables()** in the *draw* module), and draw all elements inside those tables that are not "invisible" (see **Objects** section below). This way you can easily distribute your visual elements in layers and have them being draw in the order you desire. Another useful function is **DRAW_TABLE(t)**, which draws all elements in a single table t.
+All the drawing made in your project will be made by *Drawing Tables*. Those are several tables you can add to the global **DRAW_TABLE** table. In every draw loop, your current gamestate should iterate through all **DRAW_TABLE** tables (done by the method **allTables()** in the *draw* module), and draw all elements inside those tables that are not "invisible" (see **Objects** section below). This way you can easily distribute your visual elements in layers and have them being draw in the order you desire. Another useful function is **DRAW_TABLE(t)**, which draws all elements in a single table t.
 
 If you are using HUMP's awesome camera functions, you can attach or detach the camera during the steps of the **allTable()** method to apply translation effects only in certain layers, but keeping others, such as your *GUI* layer untouched.
 
@@ -97,20 +97,19 @@ POS = Class{
     end
 }
 
---Rectangle: is a positionable and colorful object with width and height
-RECT = Class{
-    __includes = {ELEMENT, POS, CLR},
-    init = function(self, _x, _y, _w, _h, _c) --Set rectangle's atributes
+--Monster: is a positionable object with a sprite, width and height
+MONSTER = Class{
+    __includes = {ELEMENT, POS},
+    init = function(self, _x, _y, _w, _h, _sprite) --Set rectangle's atributes
         ELEMENT.init(self)
         POS.init(self, _x, _y)
         self.w = _w or 10
         self.h = _h or 10
-        CLR.init(self, _c)
+        self.sprite = _sprite
     end,
 
-    resize = function(self, _w, _h) --Change width/height
-        self.w = _w
-        self.h = _h
+    bite = function(self, target) --Deals damage to a player
+        target:takeDamage(10)
     end
 
 }

@@ -41,8 +41,8 @@ ELEMENT = Class{
     end,
 
     destroy = function(self, t) --Destroy this element from all tables (quicker if you send his drawable table, if he has one)
-        setSubTp(self, nil) --Removes from Id table, if its in one
-        setId(self, nil) --Removes from Subtype table, if its in one
+        self:setSubTp(nil) --Removes from Id table, if its in one
+        self:setId(nil) --Removes from Subtype table, if its in one
         if t then
             t[self] = nil --If you provide the  drawable table, removes from it quicker
         else
