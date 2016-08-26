@@ -28,7 +28,7 @@ ELEMENT = Class{
     setSubTp = function(self, _subtp) --Sets subtype for this element, and add it to respective subtype table for quick lookup
         if self.subtp then
             SUBTP_TABLE[self.subtp][self] = nil --Delete previous subtype this element had
-            if #SUBTP_TABLE[self.subtp] == 0 then
+            if not next(SUBTP_TABLE[self.subtp]) then
                 SUBTP_TABLE[self.subtp] = nil   --If no more elements of this subtype, delete the table
             end
         end
