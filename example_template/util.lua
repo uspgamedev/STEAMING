@@ -18,10 +18,10 @@ function util.clearTable(T, mode)
 
     --Clear T table
     for o in pairs (T) do
-        exc = o.exception
-        if mode == "force" or not exc then --Don't erase exceptions
-        	if exc ~= nil and mode == "remove" then exc = false end
+        if mode == "force" or not o.exception then --Don't erase exceptions
             o:destroy()
+        elseif mode == "remove" then
+            o.exception = false
         end
     end
 
