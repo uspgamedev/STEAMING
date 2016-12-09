@@ -5,6 +5,7 @@ local rgb = {}
 --Color object
 RGB = Class{
     init = function(self, r, g, b, a)
+        self.type = "RGB"
         self.r     = r or 255 --Red
         self.g     = g or 255 --Green
         self.b     = b or 255 --Blue

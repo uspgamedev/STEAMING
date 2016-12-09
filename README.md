@@ -1,4 +1,4 @@
-# STEAMING (with LÖVE) ver 1.0.0
+# STEAMING (with LÖVE) ver 2.0.0
 
 ### What is this?
 
@@ -78,7 +78,7 @@ ELEMENT = Class{
         tp = _tp          --Type this element belongs to
         subtp = _subtp    --Subtype this element belongs to, if any
         id = _id          --Id of this element, if any
-        exception = false --If this object is not to be removed when clearing tables
+        death = false     --If this object is not to be removed when clearing tables
         invisible = false --If this object is not to be draw
     end,
 
@@ -118,7 +118,7 @@ MONSTER = Class{
 
 *STEAMING* is very friendly to object oriented programming. All your game objects should be instantiated from a class, and those can be organized in the *classes* folder. To draw an object, you specify as a class method his *draw()* method, so that all objects are drawn the way you want them to.
 
-To help you, there is already some primitive classes you can inherit from in the *primitive* module, such as **POS** for an object with and (x,y) position or **CLR** if your object has a main color to be used when it is being drawn. Some premade classes such as **RECT** or **CIRC** are already made, which are for creating simple rectangle and circle objects. Both of them inherit from *ELEMENT*, one of the most important parts of *STEAMING*, that add a *type*, and if you desire, a *subtype* and *id* for any object you may create. This way you can easily find, modify or delete any object, whatever table he may be. Also, elements have an *exception* atribute (see **Gamestates** section), and an *invisible* atribute, that refrains one object from being drawn (*util* module has some useful methods to apply invisible exception to objects).
+To help you, there is already some primitive classes you can inherit from in the *primitive* module, such as **POS** for an object with and (x,y) position or **CLR** if your object has a main color to be used when it is being drawn. Some premade classes such as **RECT** or **CIRC** are already made, which are for creating simple rectangle and circle objects. Both of them inherit from *ELEMENT*, one of the most important parts of *STEAMING*, that add a *type*, and if you desire, a *subtype* and *id* for any object you may create. This way you can easily find, modify or delete any object, whatever table he may be. Also, elements have an *death* atribute (see **Gamestates** section), and an *invisible* atribute, that refrains one object from being drawn (*util* module has some useful methods to apply invisible or death to objects).
 
 When applying a subtype for an object (*o:setSubTp("enemy")* for example), if there isn't one, a unique table is created (*SUBTP_TABLE["enemy"]* in the same example), that you can easily iterate or manipulate. Some useful method are already implemented in the *util* module, but you can easily get all objects from a subtype with *SUBTP_TABLE["<subtype name here"]*. Similarly, you can apply an id for an object *o* with *o:setId("wall#48")*, that it will be added to a ID table for quick reference. Again, you can use the *util* module functions to get an specific object with a certain Id, or you can just get it with *ID_TABLE["id name here"]*.
 
@@ -150,8 +150,6 @@ end
 --Called when leaving this gamestate
 function state:leave()
 
-    Util.clearAllTables() --Remove all elements without exception
-
 end
 
 --Called every frame, use for logical stuff
@@ -171,7 +169,7 @@ end
 
 HUMP already has everything you'd (probably) need for gamestates, such as changing from one another, and calling the respective callbacks functions. Read more in the [documentation](http://hump.readthedocs.io/en/latest/gamestate.html).
 
-When changing between gamestates, you'll probably want to delete all the draw elements, or at least most of them. To do that you can just call the method *clearAllTables()* in the *util* module, that will clear all elements, including from id's or subtype tables. But if you don't want some objects to be deleted, just use the exceptions methods from the *util* module, to add exceptions to single elements, or even a whole subtype of them. This help you to re-use objects and stop wasting time re-creating them each time you jump from gamestates.
+When changing between gamestates, you'll probably want to delete all the draw elements, or at least most of them. To do that you can just call the method that set atributes in elements, including from id's or subtype tables, and change their death value to true. This help you to re-use objects and stop wasting time re-creating them each time you jump from gamestates.
 
 ### Useful stuff
 

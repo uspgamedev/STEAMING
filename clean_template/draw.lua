@@ -1,5 +1,3 @@
-local Rgb = require "classes/rgb"
-
 --MODULE FOR DRAWING STUFF--
 
 local draw = {}
@@ -11,21 +9,17 @@ local draw = {}
 --Draws every drawable object from all tables
 function draw.allTables()
 
+    DrawTable(DRAW_TABLE.BG)
+
+    CAM:attach() --Start tracking camera
+
     DrawTable(DRAW_TABLE.L1)
 
     DrawTable(DRAW_TABLE.L2)
 
-    CAM:attach() --Start tracking camera
-
-    DrawTable(DRAW_TABLE.L3)
-
-    DrawTable(DRAW_TABLE.L4)
-
-    DrawTable(DRAW_TABLE.L5)
-
     CAM:detach() --Stop tracking camera
 
-    DrawTable(DRAW_TABLE.L6)
+    DrawTable(DRAW_TABLE.GUI)
 
 end
 
