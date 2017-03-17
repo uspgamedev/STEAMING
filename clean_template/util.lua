@@ -9,7 +9,7 @@ local util = {}
 --Counts how many entries are on table T
 function util.tableLen(T)
   local count = 0
-  
+
   if not T then return count end
   for _ in pairs(T) do count = count + 1 end
 
@@ -18,7 +18,7 @@ end
 
 --Chcks if a tale is empty (true if it doesn't exist)
 function util.tableEmpty(T)
-  
+
   if not T then return true end
 
   return not next(T)
@@ -135,7 +135,7 @@ end
 --Update all timers
 function util.updateTimers(dt)
 
-    MAIN_TIMER:update(dt)
+    MAIN_TIMER.update(dt)
 
 end
 
@@ -232,7 +232,7 @@ function util.defaultKeyPressed(key)
     if  key == 'escape' then
         util.exit()
     elseif key == 'f1' then
-        util.toggleDebug()  
+        util.toggleDebug()
     end
 
 end

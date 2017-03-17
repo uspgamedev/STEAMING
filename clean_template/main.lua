@@ -3,6 +3,7 @@ Gamestate = require "hump.gamestate"
 Timer     = require "hump.timer"
 Class     = require "hump.class"
 Camera    = require "hump.camera"
+Vector    = require "hump.vector"
 
 
 --CLASSES
@@ -41,7 +42,7 @@ end
 -----------------
 
 function love.mousepressed(x, y, button, istouch)
-    
+
     --[[
     if button == 1 then  --Left mouse button
         Button.checkCollision(x,y)
