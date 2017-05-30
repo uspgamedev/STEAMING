@@ -2,7 +2,7 @@
 
 ### What is this?
 
-*STEAMING (with LÖVE)* is a ***S***imple ***TE***mpl***A***te for ***M***ak***IN***g ***G***ames (with *LÖVE2D*). This *README* is a quick guide to understand some components of this template, and how to use it.
+*STEAMING (with LÖVE)* is a **S**imple **TE**mpl**A**te for **M**ak**IN**g **G**ames (with *LÖVE2D*). This *README* is a quick guide to understand some components of this template, and how to use it.
 
 Downloading  the clean template, you already have folders, tables and a whole enviroment ready, improving those slow first steps when creating a game. *STEAMING* most useful aspect is the drawing method (further explained below) that is already organized, filled with useful methods, to facilitate your life managing objects on or offscreen, and an easy way to create and handle objects in your game.
 
