@@ -30,7 +30,7 @@ function util.clearTimerTable(T, TIMER)
     if not T then return end --If table is empty
     --Clear T table
     for _,o in pairs (T) do
-        TIMER:cancel(o)
+        TIMER.cancel(o)
     end
 
 end

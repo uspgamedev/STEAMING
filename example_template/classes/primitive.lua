@@ -48,7 +48,7 @@ ELEMENT = Class{
         --Iterate all handles related to MAIN_TIMER
         if self.handles then
             for _,h in pairs(self.handles) do
-                MAIN_TIMER:cancel(h) --Stops any timers this object has
+                MAIN_TIMER.cancel(h) --Stops any timers this object has
             end
         end
 
