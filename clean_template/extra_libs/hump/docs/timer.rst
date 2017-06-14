@@ -42,6 +42,11 @@ the global timer. Likewise, the global timer does not affect timer instances.
     If you don't need multiple independent schedulers, you can use the
     global/default timer (see examples).
 
+.. note::
+    Unlike the default timer, timer instances use the colon-syntax, i.e.,
+    you need to call ``instance:after(1, foo)`` instead of ``Timer.after(1,
+    foo)``.
+
 **Example**::
 
     menuTimer = Timer.new()
@@ -79,7 +84,72 @@ periodic behavior (see the example).
 ::
 
     --Using a timer instance:
-    menuTimer.after(1, finishAnimation)
+    menuTimer:after(1, finishAnimation)
+
+
+.. function:: Timer.script(func)
+
+   :param function func: Script to execute.
+
+Execute a function that can be paused without causing the rest of the program to
+be suspended. ``func`` will receive a function - ``wait`` - to do interrupt the
+script (but not the whole program) as only argument.  The function prototype of
+wait is: ``wait(delay)``.
+
+**Examples**::
+
+    Timer.script(function(wait)
+        print("Now")
+        wait(1)
+        print("After one second")
+        wait(1)
+        print("Bye!")
+    end)
+
+::
+
+    -- useful for splash screens
+    Timer.script(function(wait)
+        Timer.tween(0.5, splash.pos, {x = 300}, 'in-out-quad')
+        wait(5) -- show the splash for 5 seconds
+        Timer.tween(0.5, slpash.pos, {x = 800}, 'in-out-quad')
+    end)
+
+::
+
+    -- repeat something with a varying delay
+    Timer.script(function(wait)
+        while true do
+            spawn_ship()
+            wait(1 / (1-production_speed))
+        end
+    end)
+
+::
+
+    -- jumping with timer.script
+    self.timers:script(function(wait)
+        local w = 1/12
+        self.jumping = true
+        Timer.tween(w*2, self, {z = -8}, "out-cubic", function()
+            Timer.tween(w*2, self, {z = 0},"in-cubic")
+        end)
+
+        self.quad = self.quads.jump[1]
+        wait(w)
+
+        self.quad = self.quads.jump[2]
+        wait(w)
+
+        self.quad = self.quads.jump[3]
+        wait(w)
+
+        self.quad = self.quads.jump[4]
+        wait(w)
+
+        self.jumping = false
+        self.z = 0
+    end)
 
 
 .. function:: Timer.every(delay, func[, count])
@@ -103,7 +173,7 @@ or :func:`Timer.cancel` or :func:`Timer.clear` is called on the timer instance.
 ::
 
     -- launch 5 fighters in quick succession (using a timer instance)
-    mothership_timer.every(0.3, function() self:launchFighter() end, 5)
+    mothership_timer:every(0.3, function() self:launchFighter() end, 5)
 
 ::
 
@@ -153,7 +223,7 @@ seconds have passed.
     player.isInvincible = true
     -- flash player for 3 seconds
     local t = 0
-    player.timer.during(3, function(dt)
+    player.timer:during(3, function(dt)
         t = t + dt
         player.visible = (t % .2) < .1
     end, function()
@@ -184,9 +254,9 @@ Prevent a timer from being executed in the future.
     function tick()
         print('tick... tock...')
     end
-    handle = menuTimer.every(1, tick)
+    handle = menuTimer:every(1, tick)
     -- later
-    menuTimer.cancel(handle)
+    menuTimer:cancel(handle)
 
 
 .. function:: Timer.clear()
@@ -200,7 +270,7 @@ executed will discarded.
 
 ::
 
-    menuTimer.clear()
+    menuTimer:clear()
 
 
 .. function:: Timer.update(dt)
@@ -221,7 +291,7 @@ Update timers and execute functions if the deadline is reached. Call in
 
     -- using hump.gamestate and a timer instance
     function menuState:update(dt)
-        self.timer.update(dt)
+        self.timers:update(dt)
     end
 
 

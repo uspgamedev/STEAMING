@@ -1,4 +1,4 @@
-# STEAMING (with LÖVE) ver 2.0.0
+# STEAMING (with LÖVE) ver 3.0.0
 
 ### What is this?
 
@@ -6,9 +6,9 @@
 
 Downloading  the clean template, you already have folders, tables and a whole enviroment ready, improving those slow first steps when creating a game. *STEAMING* most useful aspect is the drawing method (further explained below) that is already organized, filled with useful methods, to facilitate your life managing objects on or offscreen, and an easy way to create and handle objects in your game.
 
-Downloading the *example_template*, you can see a simple "game" to show all those elements in action, and the recommended way to use *STEAMING*'s full potential. The *clean_template* is alot more minimalistic and only have the
-
 *STEAMING* uses [*HUMP*](http://hump.readthedocs.io/en/latest/), a really awesome library for *LÖVE* that already has classes, timers, gamestates, camera and several other useful stuff implemented. Really recommend reading their documentation a bit to better understand *STEAMING* (and to improve your life!).
+
+**TESTED AND FULLY WORKING WITH: LOVE 0.10.1**
 
 ### TOO LONG, DON'T WANT TO READ
 
@@ -52,20 +52,18 @@ function DrawTable(t)
 
     for o in pairs(t) do
         if not o.invisible then
-          love.graphics.setShader(o.shader) --Set object shader, if any
           o:draw() --Call the object respective draw function
-          love.graphics.setShader() --Remove shader, if any
         end
     end
 
 end
 ```
 
-All the drawing made in your project will be made by *Drawing Tables*. Those are several tables you can add to the global **DRAW_TABLE** table. In every draw loop, your current gamestate should iterate through all **DRAW_TABLE** tables (done by the method **allTables()** in the *draw* module), and draw all elements inside those tables that are not "invisible" (see **Objects** section below). This way you can easily distribute your visual elements in layers and have them being draw in the order you desire. Another useful function is **DRAW_TABLE(t)**, which draws all elements in a single table t.
+All the drawing made in your project will be made by *Drawing Tables*. Those are several tables you can add to the global **DRAW_TABLE** table. In every draw loop, your current gamestate should iterate through all **DRAW_TABLE** tables (done by the method **allTables()** in the *draw* module), and draw all elements inside those tables that are not "invisible" (see **Objects** section below). This way you can easily distribute your visual elements in layers and have them being draw in the order you desire. Another useful function is **DrawTable(t)**, which draws all elements in a single table t.
 
 If you are using HUMP's awesome camera functions, you can attach or detach the camera during the steps of the **allTable()** method to apply translation effects only in certain layers, but keeping others, such as your *GUI* layer untouched.
 
-You can change the name of the tables to be more explicit, such as renaming your last layer to *GUI* and your first to *BG*. Also, by default there are 6 layers, but you can easily change this to whatever is best for you.
+You can change the name of the tables to be more explicit, such as renaming your last layer to *GUI* and your first to *BG*. By default there are 3 layers, but you can easily change this to whatever is best for your project.
 
 But how do we draw each different element in the Drawing Tables? That's where *HUMP*'s classes come in!
 
@@ -75,11 +73,13 @@ But how do we draw each different element in the Drawing Tables? That's where *H
 --Element: has a type, subtype and id
 ELEMENT = Class{
     init = function(self, _tp, _subtp, _id)
-        tp = _tp          --Type this element belongs to
-        subtp = _subtp    --Subtype this element belongs to, if any
-        id = _id          --Id of this element, if any
-        death = false     --If this object is not to be removed when clearing tables
-        invisible = false --If this object is not to be draw
+        self.tp = nil --Type this element belongs to
+        self.subtp = nil --Subtype this element belongs to, if any
+        self.id = nil --Id of this element, if any
+        self.invisible = false --If this object is not to be draw
+        self.death = false --If true, the object will be deleted next update, unless it has the excepton flag as true
+        self.exception = false --If this object is not to be removed when clearing tables, even if the death flag is on
+        self.handles = {} --Table containing active color timer handles for this object
     end,
 
     --other methods here--
@@ -169,11 +169,16 @@ end
 
 HUMP already has everything you'd (probably) need for gamestates, such as changing from one another, and calling the respective callbacks functions. Read more in the [documentation](http://hump.readthedocs.io/en/latest/gamestate.html).
 
-When changing between gamestates, you'll probably want to delete all the draw elements, or at least most of them. To do that you can just call the method that set atributes in elements, including from id's or subtype tables, and change their death value to true. This help you to re-use objects and stop wasting time re-creating them each time you jump from gamestates.
+When changing between gamestates, you'll probably want to delete all the draw elements, or at least most of them. To do that you could just call a method from the *util* module that set atributes in elements, including from id's or subtype tables, and change their death value to true. This help you to re-use objects and stop wasting time re-creating them each time you jump from gamestates. Another alternative is to call the *destroyAll("true_force")* function. It would normally destroy only objects with the death flag on, but the argument "force" ignores the "death" and even "exception" flags, so it will just clear everything from all tables.
 
 ### Useful stuff
 
-There are already some useful classes implemented, such as *rgb* for color manipulation and buttons (by the fault its a rectangle with some text). Feel free to edit and change any files as you desire to better suit your project :)
+There are already some useful classes implemented, such as
+ - *color* for color manipulation, where you can choose "RGB" or "HSL" as your default color encoding format
+ - *util* module filled with useful stuff for your project, such as element manipulation or collision algorithms
+ - much more! Explore and discover :)
+
+Feel free to edit and change any files as you desire to better suit your project :)
 
 ### How to use
 

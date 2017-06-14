@@ -4,50 +4,89 @@ local Hsl = require "classes.color.hsl"
 
 --Wrapper to properly handle HSV or RGB colors
 
-local Color = {}
+local color_funcs = {}
 local Default = "HSL" --Default mode for colors in this program.
 
+--Returns a new color, given its 4 basic values: (hue, saturation, lightness and alpha) or (red, green, blue and alpha).
+--You can provide the type, or else it will use the default type
+--Tee first argument can be an already created color table. If so, the function will act exactly as color_funcs.getCopy().
+function color_funcs.new(h_r_color, s_g, l_b, a, tp, sdtv)
+
+    --Creates a copy of the color if its the first argument
+    if type(h_r_color) == "table" then
+        return color_funcs.getCopy(h_r_color)
+    end
+
+    tp = tp or Default
+    a = a or 255
+    if tp == "HSL" then
+        if sdtv then
+            local h,s,l,a = Hsl.sdtv(h_r_color, s_g, l_b, a)
+            HSL(h,s,l,a)
+        else
+            return HSL(h_r_color, s_g, l_b, a)
+        end
+    elseif tp == "RGB" then
+        return RGB(h_r_color, s_g, l_b, a)
+    else
+        return color_funcs.white()
+    end
+end
+
 --Returns a new color identical to the one provided
-function Color.getCopy(c)
-    if c1.type == "RGB" then
+function color_funcs.getCopy(c)
+    if c.tp == "RGB" then
         return RGB(c.r, c.g, c.b, c.a)
-    elseif c1.type == "HSL" then
+    elseif c.tp == "HSL" then
         return HSL(c.h, c.s, c.l, c.a)
     end
 end
 
 --Copy colors from a color c2 to a color c1 (both have to be the same type)
-function Color.copy(c1, c2)
-    if c1.type == "RGB" then
+function color_funcs.copy(c1, c2)
+    if c1.tp == "RGB" then
         Rgb.copy(c1, c2)
-    elseif c1.type == "HSL" then
+    elseif c1.tp == "HSL" then
         Hsl.copy(c1, c2)
     end
 end
 
 --Set color c as love drawing color
-function Color.set(c)
-    if c.type == "RGB" then
+function color_funcs.set(c)
+
+    if c.tp == "RGB" then
         Rgb.set(c)
-    elseif c.type == "HSL" then
+    elseif c.tp == "HSL" then
         Hsl.set(c)
+    end
+
+end
+
+--Converts the color you provide to opposite mode (HSL to RGB, and RGB to HSL)
+function color_funcs.convert(c)
+    if c.tp == "HSL" then
+        local r,g,b,a = Hsl.convert(c.h, c.s, c.l, c.a)
+        return RGB(r,g,b,a)
+    elseif c.tp == "RBB" then
+        local h,s,l,a = Rgb.convert(c.r, c.g, c.b, c.a)
+        return HSL(h,s,l,a)
     end
 end
 
 --Set the color used for drawing using 255 as alpha amount
-function Color.setOpaque(c)
-    if c.type == "RGB" then
+function color_funcs.setOpaque(c)
+    if c.tp == "RGB" then
         Rgb.setOpaque(c)
-    elseif c.type == "HSL" then
+    elseif c.tp == "HSL" then
         Hsl.setOpaque(c)
     end
 end
 
 --Set the color used for drawing using 0 as alpha amount
-function Color.setTransp(c)
-    if c.type == "RGB" then
+function color_funcs.setTransp(c)
+    if c.tp == "RGB" then
         Rgb.setTransp(c)
-    elseif c.type == "HSL" then
+    elseif c.tp == "HSL" then
         Hsl.setTransp(c)
     end
 end
@@ -57,7 +96,7 @@ end
 ---------------
 
 --Dark Black
-function Color.black(mode)
+function color_funcs.black(mode)
     mode = mode or Default
 
     if mode == "HSL" then
@@ -68,7 +107,7 @@ function Color.black(mode)
 end
 
 --Clean white
-function Color.white(mode)
+function color_funcs.white(mode)
     mode = mode or Default
 
     if mode == "HSL" then
@@ -79,7 +118,7 @@ function Color.white(mode)
 end
 
 --Cheerful red
-function Color.red(mode)
+function color_funcs.red(mode)
     mode = mode or Default
 
     if mode == "HSL" then
@@ -90,7 +129,7 @@ function Color.red(mode)
 end
 
 --Calm green
-function Color.green(mode)
+function color_funcs.green(mode)
     mode = mode or Default
 
     if mode == "HSL" then
@@ -101,7 +140,7 @@ function Color.green(mode)
 end
 
 --Smooth blue
-function Color.blue(mode)
+function color_funcs.blue(mode)
     mode = mode or Default
 
     if mode == "HSL" then
@@ -112,7 +151,7 @@ function Color.blue(mode)
 end
 
 --Jazzy orange
-function Color.orange(mode)
+function color_funcs.orange(mode)
     mode = mode or Default
 
     if mode == "HSL" then
@@ -123,7 +162,7 @@ function Color.orange(mode)
 end
 
 --Sunny yellow
-function Color.yellow(mode)
+function color_funcs.yellow(mode)
     mode = mode or Default
 
     if mode == "HSL" then
@@ -134,7 +173,7 @@ function Color.yellow(mode)
 end
 
 --Sexy purple
-function Color.purple(mode)
+function color_funcs.purple(mode)
     mode = mode or Default
 
     if mode == "HSL" then
@@ -145,7 +184,7 @@ function Color.purple(mode)
 end
 
 --Happy pink
-function Color.pink(mode)
+function color_funcs.pink(mode)
     mode = mode or Default
 
     if mode == "HSL" then
@@ -156,7 +195,7 @@ function Color.pink(mode)
 end
 
 --Invisible transparent
-function Color.transp(mode)
+function color_funcs.transp(mode)
     mode = mode or Default
 
     if mode == "HSL" then
@@ -167,4 +206,4 @@ function Color.transp(mode)
 end
 
 --Return functions
-return Color
+return color_funcs

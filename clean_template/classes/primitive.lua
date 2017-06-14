@@ -10,9 +10,9 @@ ELEMENT = Class{
         self.tp = nil --Type this element belongs to
         self.subtp = nil --Subtype this element belongs to, if any
         self.id = nil --Id of this element, if any
-        self.exception = false --If this object is not to be removed when clearing tables
         self.invisible = false --If this object is not to be draw
-        self.death = false --If true, the object will be deleted next update
+        self.death = false --If true, the object will be deleted next update, unless it has the excepton flag as true
+        self.exception = false --If this object is not to be removed when clearing tables, even if the death flag is on
         self.handles = {} --Table containing active color timer handles for this object
     end,
 
@@ -45,10 +45,12 @@ ELEMENT = Class{
         self:setSubtype(nil) --Removes from Subtype table, if its in one
         self:setId(nil) --Removes from Id table, if its in one
 
-        --Iterate all handles related to MAIN_TIMER
+        --Iterate through all handles this object might have and cancel from the correspondent timer
         if self.handles then
-            for _,h in pairs(self.handles) do
-                MAIN_TIMER.cancel(h) --Stops any timers this object has
+            for timers in pairs(self.handles) do
+                for handle in pairs(timer) do
+                    timers:cancel(handle) --Stops any timers this object has
+                end
             end
         end
 
@@ -64,10 +66,10 @@ ELEMENT = Class{
         end
     end,
 
-    addElement = function(self, t, subtp, id) --Add element to a t drawable table, and if desired, adds a subtype and/or id
+    addElement = function(self, draw_table_label, subtp, id) --Add element to a drawable table with label "draw_table_label", and if desired, adds a subtype and/or id
+        DRAW_TABLE[draw_table_label][self] = true
         if subtp then self:setSubtype(subtp) end
         if id then self:setId(id) end
-        t[self] = true
     end,
 
     --Kill this object
@@ -97,8 +99,11 @@ POS = Class{
 --Colorful: the object has a color, and a color table for  transistions
 CLR = Class{
     init = function(self, _c)
-        self.color = HSL() --This object main color
-        if _c then Color.copy(self.color, _c) end
+        if _c then
+            self.color = Color.getCopy(_c) --This object main color
+        else
+            self.color = Color.white()
+        end
     end,
 
     setColor = function(self, _c) --Set object's color
@@ -112,12 +117,28 @@ WTXT = Class{
     init = function(self, _text, _font, _t_color) --Set circle's atributes
         self.text = _text or "sample" --This object text
         self.font = _font             --This object text font
-        self.t_color = _t_color or HSL(0,0,0) --This object text color
+        self.t_color = _t_color or Color.new(0,0,0) --This object text color
         if _text_color then Color.copy(self.t_color, _t_color) end
     end,
 
     setTextColor = function(self, _c) --Set object's text color
         Color.copy(self.t_color, _c)
+    end
+}
+
+--Drawable object with a 2-dimension position, color, rotation and scale(x,y)
+DRAWABLE = Class{
+    __includes = {ELEMENT, POS, CLR},
+    init = function(self, _x, _y, _c, _rotation, _sx, _sy)
+        ELEMENT.init(self)
+        POS.init(self, _x, _y)
+        CLR.init(_c)
+
+        self.rotation = _rotation
+        self.sx = _sx
+        self.sy = _sy
+
+        self.tp = "drawable"
     end
 }
 
@@ -131,10 +152,9 @@ WTXT = Class{
 
 --Rectangle: is a positionable and colorful object with width and height
 RECT = Class{
-    __includes = {ELEMENT, POS, CLR},
+    __includes = {DRAWABLE},
     init = function(self, _x, _y, _w, _h, _c, _mode, _line_width) --Set rectangle's atributes
-        ELEMENT.init(self)
-        POS.init(self, _x, _y)
+        DRAWABLE.init(self, _x, _y, _c, 0, 1, 1)
 
         self.w = _w or 10 --Width
         self.h = _h or 10 --Height
@@ -142,7 +162,7 @@ RECT = Class{
         self.mode = self.mode or _mode or "fill" --Mode to draw the triangle
         self.line_width = _line_width or 3 --Line thickness if mode is line
 
-        CLR.init(self, _c)
+        self.tp = "rectangle"
     end,
 
     resize = function(self, _w, _h) --Change width/height
@@ -176,6 +196,7 @@ TRIANGLE = Class{
     __includes = {ELEMENT, CLR},
     init = function(self, _pos1, _pos2, _pos3, _c, _mode, _line_width) --Set rectangle's atributes
         ELEMENT.init(self)
+        CLR.init(self, _c)
 
         --Triangle positions
         self.p1 = Vector(_pos1.x, _pos1.y)
@@ -185,8 +206,7 @@ TRIANGLE = Class{
         self.mode = self.mode or _mode or "line" --Mode to draw the triangle
         self.line_width = _line_width or 3 --Line thickness if mode is line
 
-        CLR.init(self, _c)
-
+        self.tp = "rectangle"
     end
 }
 
@@ -226,15 +246,39 @@ CIRC = Class{
 
 --Draws the circle
 function CIRC:draw()
-    local p
 
-    p = self
+    local circ = self
 
-    Color.set(p.color)
-    if p.mode == "line" then
-        love.graphics.setLineWidth(p.line_width)
+    Color.set(circ.color)
+    if circ.mode == "line" then
+        love.graphics.setLineWidth(circ.line_width)
     end
 
-    love.graphics.circle(p.mode, p.pos.x, p.pos.y, p.r)
+    love.graphics.circle(circ.mode, circ.pos.x, circ.pos.y, circ.r)
+
+end
+
+-------------------
+--IMAGE FUNCTIONS--
+-------------------
+
+--Image: is a drawable object with an image
+IMAGE = Class{
+    __includes = {DRAWABLE},
+    init = function(self, _image, _x, _y, _c, _sx, _sy, _rotation) --Set circle's atributes
+        DRAWABLE.init(self, _x, _y, _c, _rotation, _sx, _sy)
+
+        self.image = _image
+
+    end,
+}
+
+--Draws the image
+function IMAGE:draw()
+
+    local img = self
+
+    Color.set(img.color)
+    love.graphics.draw(img.image, img.pos.x, img.pos.y, img.rotation, img.sx, img.sy)
 
 end

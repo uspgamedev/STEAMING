@@ -5,11 +5,12 @@ local hsl = {}
 --Color object
 HSL = Class{
     init = function(self, h, s, l, a)
-        self.type = "HSL"
         self.h     = h or 255 --Hue
         self.s     = s or 255 --Saturation
         self.l     = l or 255 --Lightness
         self.a     = a or 255 --Alpha
+
+        self.tp = "HSL"
     end
 }
 
@@ -46,14 +47,13 @@ end
 
 --Converts HSL in (degrees, percent, percent) to standard (0-255) value
 function hsl.stdv(h,s,l,a)
-  local sh, ss, sl
 
-  sh = h*255/360
-  ss = s*255/100
-  sl = l*255/100
-  a = a or 255
+    local sh = h*255/360
+    local ss = s*255/100
+    local sl = l*255/100
+    local a = a or 255
 
-  return sh, ss, sl, a
+    return sh, ss, sl, a
 end
 
 --Return hue, saturation and lightness levels of given color c
@@ -83,52 +83,52 @@ function hsl.setTransp(c) love.graphics.setColor(hsl.convert(c.h, c.s, c.l, 0)) 
 
 --Dark Black
 function hsl.black()
-  return HSL(hsl.stdv(0,0,0))
+    return HSL(hsl.stdv(0,0,0))
 end
 
 --Clean white
 function hsl.white()
-  return HSL(hsl.stdv(0,0,100))
+    return HSL(hsl.stdv(0,0,100))
 end
 
 --Cheerful red
 function hsl.red()
-  return HSL(hsl.stdv(351,95.4,57.1))
+    return HSL(hsl.stdv(351,95.4,57.1))
 end
 
 --Calm green
 function hsl.green()
-  return HSL(hsl.stdv(117,90.6,66.5))
+    return HSL(hsl.stdv(117,90.6,66.5))
 end
 
 --Smooth blue
 function hsl.blue()
-  return HSL(hsl.stdv(217,78.6,45.9))
+    return HSL(hsl.stdv(217,78.6,45.9))
 end
 
 --Jazzy orange
 function hsl.orange()
-  return HSL(hsl.stdv(24,90.6,66.5))
+    return HSL(hsl.stdv(24,90.6,66.5))
 end
 
 --Sunny yellow
 function hsl.yellow()
-  return HSL(hsl.stdv(55,85.4,59.8))
+    return HSL(hsl.stdv(55,85.4,59.8))
 end
 
 --Sexy purple
 function hsl.purple()
-  return HSL(hsl.stdv(267,85.6,59.2))
+    return HSL(hsl.stdv(267,85.6,59.2))
 end
 
 --Happy pink
 function hsl.pink()
-  return HSL(hsl.stdv(318,85.8,64.1))
+    return HSL(hsl.stdv(318,85.8,64.1))
 end
 
 --Invisible transparent
 function hsl.transp()
-  return HSL(0,0,0,0)
+    return HSL(0,0,0,0)
 end
 
 --Return functions

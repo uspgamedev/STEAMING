@@ -136,7 +136,7 @@ end
 --Update all timers
 function util.updateTimers(dt)
 
-    MAIN_TIMER.update(dt)
+    MAIN_TIMER:update(dt)
 
 end
 
@@ -145,61 +145,65 @@ end
 --DESTROY FUNCTIONS--
 ---------------------
 
---Delete an object based on an id
-function util.destroyId(id)
-    if ID_TABLE[id] then ID_TABLE[id]:destroy() end
-end
-
---Delete a set of objects based on a subtype
-function util.destroySubtype(subtp)
-    if SUBTP_TABLE[subtp] then
-        for o in pairs(SUBTP_TABLE[subtp]) do
-            o:destroy()
-        end
-    end
-end
-
---Iterate through a table and destroys any element with the death flag on
-function util.destroyTable(T)
+--[[Iterate through a table and destroys any element with the death flag on
+    -If mode is "force", it will destroy all objects despite the "death" flag, except the ones with the "exception" flag on
+    -If mode is "true_force", destroy all objects no matter the death flag or exception
+]]
+function util.destroyTable(T, mode)
 
     if not T then return end
     for o in pairs(T) do
-        if o.death then o:destroy() end
+        if o.death or mode == "force" then o:destroy() end
     end
 
 end
 
---Iterate through all elements with a subtype sb and destroy anything with the death flag on
-function util.destroySubtype(sb)
+
+--[[Destroys a single element if his death flag is on or mode is "force"
+    -If mode is "force", it will destroy all objects despite the "death" flag, except the ones with the "exception" flag on
+    -If mode is "true_force", destroy all objects no matter the death flag or exception
+]]
+function util.destroyId(id, mode)
+    local o
+
+    o = ID_TABLE[id]
+    if o and
+        (
+          (o.death) or
+          (mode == "force" and not o.exception) or
+          (mode == "true_force")
+        ) then
+         o:destroy()
+    end
+
+end
+
+--[[Iterate through all elements with a subtype sb and destroy anything with the death flag on
+    -If mode is "force", it will destroy all objects despite the "death" flag, except the ones with the "exception" flag on
+    -If mode is "true_force", destroy all objects no matter the death flag or exception
+]]
+function util.destroySubtype(sb, mode)
 
     util.destroyTable(SUBTP_TABLE[sb])
 
 end
 
---Destroy all objects in game that have the death flag set to true
-function util.destroyAll()
+--[[Destroy all objects in the game that have the death flag set to true
+    -If mode is "force", it will destroy all objects despite the "death" flag, except the ones with the "exception" flag on
+    -If mode is "true_force", destroy all objects no matter the death flag or exception
+]]
+function util.destroyAll(mode)
 
     for T in pairs(SUBTP_TABLE) do
-        util.destroySubTp(T)
+        util.destroySubtype(T, mode)
     end
 
     for o in pairs(ID_TABLE) do
-        util.destroyId(o)
+        util.destroyId(o, mode)
     end
 
     for _,T in pairs(DRAW_TABLE) do
-        util.destroyTable(T)
-    end
-
-end
-
---Destroys a single element if his death flag is on
-function util.destroyId(id)
-    local o
-
-    o = ID_TABLE[id]
-    if o and o.death then
-         o:destroy()
+        util.destroyTable(T, mode)
     end
 
 end

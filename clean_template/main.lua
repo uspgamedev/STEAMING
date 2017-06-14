@@ -10,25 +10,22 @@ Vector    = require "extra_libs.hump.vector"
 
 require "classes.primitive"
 Color = require "classes.color.color"
-require "classes.color.rgb"
-require "classes.color.hsl"
-
 
 --MY MODULES
 Util      = require "util"
 Draw      = require "draw"
 Setup     = require "setup"
 Font      = require "font"
+Res       = require "res_manager"
 
 
 
 
 --GAMESTATES
 GS = {
---MENU     = require "gamestate.menu",     --Menu Gamestate
-GAME     = require "gamestates.game",     --Game Gamestate
---PAUSE    = require "gamestate.pause",    --Pause Gamestate
---GAMEOVER = require "gamestate.gameover"  --Gameover Gamestate
+    --MENU     = require "gamestates.menu",     --Menu Gamestate
+    GAME     = require "gamestates.game",     --Game Gamestate
+    --GAMEOVER = require "gamestates.gameover"  --Gameover Gamestate
 }
 
 ------------------
@@ -40,6 +37,13 @@ function love.load()
     Setup.config() --Configure your game
 
     Gamestate.registerEvents() --Overwrites love callbacks to call Gamestate as well
+
+    --[[
+        Setup support for multiple resolutions. Res.init() Must be called after Gamestate.registerEvents()
+        so it will properly call the draw function applying translations.
+    ]]
+    Res.init()
+
     Gamestate.switch(GS.GAME) --Jump to the inicial state
 
 end
