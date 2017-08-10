@@ -13,7 +13,7 @@ ELEMENT = Class{
         self.invisible = false --If this object is not to be draw
         self.death = false --If true, the object will be deleted next update, unless it has the excepton flag as true
         self.exception = false --If this object is not to be removed when clearing tables, even if the death flag is on
-        self.handles = {} --Table containing active color timer handles for this object
+        self.timers = {} --Table containing used timers for this object
     end,
 
     --Sets id for this element, and add it to a ID table for quick lookup
@@ -46,10 +46,10 @@ ELEMENT = Class{
         self:setId(nil) --Removes from Id table, if its in one
 
         --Iterate through all handles this object might have and cancel from the correspondent timer
-        if self.handles then
-            for timers in pairs(self.handles) do
-                for handle in pairs(timer) do
-                    timers:cancel(handle) --Stops any timers this object has
+        if self.timers then
+            for timer,handles in pairs(self.timers) do
+                for _,handle in ipairs(handles) do
+                    timer:cancel(handle) --Stops any timers this object has
                 end
             end
         end
