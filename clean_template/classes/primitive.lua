@@ -79,6 +79,20 @@ ELEMENT = Class{
         self.death = true
 
     end,
+
+    --Stores with a label a handle on the element given timer and function to use. Pass the arguments for the timer fucntionas well.
+    --If given a label, its the same as
+    --  self.timers[label] = timer.func(...)
+    --If not just inserts the handle
+    addTimer = function(self, label, timer, func, ...)
+
+        if label then
+            self.timers[timer][label] = timer[func](timer,...)
+        else
+            table.insert(self.timers[timer], timer[func](...))
+        end
+
+    end,
 }
 
 -------------------
