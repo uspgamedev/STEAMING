@@ -96,6 +96,14 @@ ELEMENT = Class{
         end
 
     end,
+
+    --Remove a timer from element table
+    removeTimer = function(self, label, timer)
+        if not self.timers[timer] or not self.timers[timer][label] then return end
+
+        timer:cancel(self.timers[timer][label])
+
+    end
 }
 
 -------------------
