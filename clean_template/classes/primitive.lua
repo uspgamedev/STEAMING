@@ -86,6 +86,9 @@ ELEMENT = Class{
     --If not just inserts the handle
     addTimer = function(self, label, timer, func, ...)
 
+        --Initialize table if it doesn't exists
+        if not self.timers[timer] then self.timers[timer] = {} end
+
         if label then
             self.timers[timer][label] = timer[func](timer,...)
         else
