@@ -92,7 +92,7 @@ ELEMENT = Class{
         if label then
             self.timers[timer][label] = timer[func](timer,...)
         else
-            table.insert(self.timers[timer], timer[func](...))
+            table.insert(self.timers[timer], timer[func](timer,...))
         end
 
     end,
