@@ -140,6 +140,14 @@ function util.updateTimers(dt)
 
 end
 
+--Update all objects in the draw tables
+function util.updateDrawTable(dt)
+
+	for _,T in pairs(DRAW_TABLE) do
+		util.updateTable(dt, T)
+	end
+
+end
 
 ---------------------
 --DESTROY FUNCTIONS--
