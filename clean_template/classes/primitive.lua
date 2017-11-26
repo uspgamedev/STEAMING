@@ -157,7 +157,7 @@ DRAWABLE = Class{
     init = function(self, _x, _y, _c, _rotation, _sx, _sy)
         ELEMENT.init(self)
         POS.init(self, _x, _y)
-        CLR.init(_c)
+        CLR.init(self, _c)
 
         self.rotation = _rotation
         self.sx = _sx
