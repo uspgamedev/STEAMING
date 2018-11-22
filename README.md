@@ -4,7 +4,7 @@
 
 *STEAMING (with LÖVE)* is a **S**imple **TE**mpl**A**te for **M**ak**IN**g **G**ames (with *LÖVE2D*). This *README* is a quick guide to understand some components of this template, and how to use it.
 
-Downloading  the clean template, you already have folders, tables and a whole enviroment ready, improving those slow first steps when creating a game. *STEAMING* most useful aspect is the drawing method (further explained below) that is already organized, filled with useful methods, to facilitate your life managing objects on or offscreen, and an easy way to create and handle objects in your game.
+Downloading the clean template, you already have folders, tables and a whole enviroment ready, improving those slow first steps when creating a game. *STEAMING* most useful aspect is the drawing method (further explained below) that is already organized, filled with useful methods, to facilitate your life managing objects on or offscreen, and an easy way to create and handle objects in your game.
 
 *STEAMING* uses [*HUMP*](http://hump.readthedocs.io/en/latest/), a really awesome library for *LÖVE* that already has classes, timers, gamestates, camera and several other useful stuff implemented. Really recommend reading their documentation a bit to better understand *STEAMING* (and to improve your life!).
 
@@ -12,7 +12,7 @@ Downloading  the clean template, you already have folders, tables and a whole en
 
 ### TOO LONG, DON'T WANT TO READ
 
-If you don't want to read this *README*, just go ahead and dive in the *clean_template* or the *example_template*. Both are well documented (or so I hope...), and are made to be easily understood. You can check this *README* or other *READMEs* in the template for further explanations anytime you need (don't forget the [*HUMP* documentation](http://hump.readthedocs.io/en/latest/) as well). For a little more indepth of the template, just continue reading.
+If you don't want to read this *README*, just go ahead and dive in the *clean_template*. You can check this *README* or other *READMEs* in the template for further explanations anytime you need (don't forget the [*HUMP* documentation](http://hump.readthedocs.io/en/latest/) as well). For a little more indepth of the template, just continue reading.
 
 ### Drawing Stuff
 
@@ -48,7 +48,7 @@ function draw.allTables()
 end
 
 --Draw all the elements in a table
-function DrawTable(t)
+local function DrawTable(t)
 
     for o in pairs(t) do
         if not o.invisible then
@@ -118,7 +118,7 @@ MONSTER = Class{
 
 *STEAMING* is very friendly to object oriented programming. All your game objects should be instantiated from a class, and those can be organized in the *classes* folder. To draw an object, you specify as a class method his *draw()* method, so that all objects are drawn the way you want them to.
 
-To help you, there is already some primitive classes you can inherit from in the *primitive* module, such as **POS** for an object with and (x,y) position or **CLR** if your object has a main color to be used when it is being drawn. Some premade classes such as **RECT** or **CIRC** are already made, which are for creating simple rectangle and circle objects. Both of them inherit from *ELEMENT*, one of the most important parts of *STEAMING*, that add a *type*, and if you desire, a *subtype* and *id* for any object you may create. This way you can easily find, modify or delete any object, whatever table he may be. Also, elements have an *death* atribute (see **Gamestates** section), and an *invisible* atribute, that refrains one object from being drawn (*util* module has some useful methods to apply invisible or death to objects).
+To help you, there is already some primitive classes you can inherit from in the *primitive* folder, such as **POS** for an object with and (x,y) position or **CLR** if your object has a main color to be used when it is being drawn. Some premade classes such as **RECT** or **CIRC** are already made, which are for creating simple rectangle and circle objects. Both of them inherit from *ELEMENT*, one of the most important parts of *STEAMING*, that add a *type*, and if you desire, a *subtype* and *id* for any object you may create. This way you can easily find, modify or delete any object, whatever table he may be. Also, elements have an *death* atribute (see **Gamestates** section), and an *invisible* atribute, that refrains one object from being drawn (*util* module has some useful methods to apply invisible or death to objects).
 
 When applying a subtype for an object (*o:setSubTp("enemy")* for example), if there isn't one, a unique table is created (*SUBTP_TABLE["enemy"]* in the same example), that you can easily iterate or manipulate. Some useful method are already implemented in the *util* module, but you can easily get all objects from a subtype with *SUBTP_TABLE["<subtype name here"]*. Similarly, you can apply an id for an object *o* with *o:setId("wall#48")*, that it will be added to a ID table for quick reference. Again, you can use the *util* module functions to get an specific object with a certain Id, or you can just get it with *ID_TABLE["id name here"]*.
 

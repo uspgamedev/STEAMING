@@ -9,22 +9,18 @@ local draw = {}
 --Draws every drawable object from all tables
 function draw.allTables()
 
-    DrawTable(DRAW_TABLE.BG)
+    draw.DrawTable(DRAW_TABLE.BG)
 
-    CAM:attach() --Start tracking camera
+    draw.DrawTable(DRAW_TABLE.L1)
 
-    DrawTable(DRAW_TABLE.L1)
+    draw.DrawTable(DRAW_TABLE.L2)
 
-    DrawTable(DRAW_TABLE.L2)
-
-    CAM:detach() --Stop tracking camera
-
-    DrawTable(DRAW_TABLE.GUI)
+    draw.DrawTable(DRAW_TABLE.GUI)
 
 end
 
 --Draw all the elements in a table
-function DrawTable(t)
+function draw.DrawTable(t)
 
     for o in pairs(t) do
         if not o.invisible then

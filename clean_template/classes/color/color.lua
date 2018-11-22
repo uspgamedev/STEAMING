@@ -5,7 +5,7 @@ local Hsl = require "classes.color.hsl"
 --Wrapper to properly handle HSV or RGB colors
 
 local color_funcs = {}
-local Default = "HSL" --Default mode for colors in this program.
+local Default = "RGB" --Default mode for colors in this program.
 
 --Returns a new color, given its 4 basic values: (hue, saturation, lightness and alpha) or (red, green, blue and alpha).
 --You can provide the type, or else it will use the default type
@@ -22,12 +22,12 @@ function color_funcs.new(h_r_color, s_g, l_b, a, tp, sdtv)
     if tp == "HSL" then
         if sdtv then
             local h,s,l,a = Hsl.sdtv(h_r_color, s_g, l_b, a)
-            HSL(h,s,l,a)
+            Hsl.new(h,s,l,a)
         else
-            return HSL(h_r_color, s_g, l_b, a)
+            return Hsl.new(h_r_color, s_g, l_b, a)
         end
     elseif tp == "RGB" then
-        return RGB(h_r_color, s_g, l_b, a)
+        return Rgb.new(h_r_color, s_g, l_b, a)
     else
         return color_funcs.white()
     end
@@ -36,9 +36,9 @@ end
 --Returns a new color identical to the one provided
 function color_funcs.getCopy(c)
     if c.tp == "RGB" then
-        return RGB(c.r, c.g, c.b, c.a)
+        return Rgb.new(c.r, c.g, c.b, c.a)
     elseif c.tp == "HSL" then
-        return HSL(c.h, c.s, c.l, c.a)
+        return Hsl.new(c.h, c.s, c.l, c.a)
     end
 end
 
@@ -53,23 +53,21 @@ end
 
 --Set color c as love drawing color
 function color_funcs.set(c)
-
     if c.tp == "RGB" then
         Rgb.set(c)
     elseif c.tp == "HSL" then
         Hsl.set(c)
     end
-
 end
 
 --Converts the color you provide to opposite mode (HSL to RGB, and RGB to HSL)
 function color_funcs.convert(c)
     if c.tp == "HSL" then
         local r,g,b,a = Hsl.convert(c.h, c.s, c.l, c.a)
-        return RGB(r,g,b,a)
+        return Rgb.new(r,g,b,a)
     elseif c.tp == "RBB" then
         local h,s,l,a = Rgb.convert(c.r, c.g, c.b, c.a)
-        return HSL(h,s,l,a)
+        return Hsl.new(h,s,l,a)
     end
 end
 

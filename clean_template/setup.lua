@@ -1,3 +1,6 @@
+local Timer = require "extra_libs.hump.timer"
+local Camera = require "extra_libs.hump.timer"
+
 --MODULE FOR SETUP STUFF--
 
 local setup = {}
@@ -12,11 +15,11 @@ function setup.config()
     --RANDOM SEED--
     love.math.setRandomSeed( os.time() )
 
-    --TIMERS--
+    --GLOBAL VARIABLES--
+
+    --Timers--
     MAIN_TIMER = Timer.new()  --General Timer
 
-
-    --GLOBAL VARIABLES--
     DEBUG = true --DEBUG mode status
 
     O_WIN_W = 500 --The original width of your game. Work with this value when using res_manager multiple resolutions support
@@ -35,7 +38,7 @@ function setup.config()
     ID_TABLE = {} --Table with elements with Ids (for fast lookup)
 
     --CAMERA--
-    CAM = Camera(O_WIN_W/2, O_WIN_H/2) --Set camera position to center of screen
+    CAM = Camera.new(O_WIN_W/2, O_WIN_H/2) --Set camera position to center of screen
 
     --IMAGES--
     IMG = { --Table containing all the images

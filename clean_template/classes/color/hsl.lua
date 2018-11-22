@@ -1,9 +1,10 @@
+local Class = require "extra_libs.hump.class"
 --MODULE FOR COLOR AND STUFF--
 
 local hsl = {}
 
 --Color object
-HSL = Class{
+local HSL = Class{
     init = function(self, h, s, l, a)
         self.h     = h or 255 --Hue
         self.s     = s or 255 --Saturation
@@ -17,6 +18,11 @@ HSL = Class{
 ------------------
 --USEFUL FUNCTIONS
 ------------------
+
+--Create a new color
+function hsl.new(h,s,l,a)
+  return HSL(h,s,l,a)
+end
 
 --Converts HSL to RGB. (input and output range: 0 - 255)
 function hsl.convert(h, s, l, a)

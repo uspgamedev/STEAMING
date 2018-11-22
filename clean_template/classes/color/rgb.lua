@@ -1,10 +1,11 @@
+local Class = require "extra_libs.hump.class"
 local Hsl = require "classes.color.hsl"
 --MODULE FOR COLOR AND STUFF--
 
 local rgb_funcs = {}
 
 --Color object
-RGB = Class{
+local RGB = Class{
     init = function(self, r, g, b, a)
         self.r     = r or 255 --Red
         self.g     = g or 255 --Green
@@ -18,6 +19,12 @@ RGB = Class{
 ------------------
 --USEFUL FUNCTIONS
 ------------------
+
+--Create a new color
+function rgb_funcs.new(r,g,b,a)
+  return RGB(r,g,b,a)
+end
+
 --Converts RGB to HSL. (input and output range: 0 - 255)
 function rgb_funcs.convert(r, g, b, a)
 
