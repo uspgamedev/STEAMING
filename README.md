@@ -1,4 +1,4 @@
-# STEAMING (with LÖVE) ver 3.0.0
+# STEAMING (with LÖVE) ver 4.0.0
 
 ### What is this?
 
@@ -175,7 +175,7 @@ When changing between gamestates, you'll probably want to delete all the draw el
 
 There are already some useful classes implemented, such as
  - *color* for color manipulation, where you can choose "RGB" or "HSL" as your default color encoding format
- - *util* module filled with useful stuff for your project, such as element manipulation or collision algorithms
+ - *util* module filled with useful stuff for your project, such as element manipulation or table methods
  - much more! Explore and discover :)
 
 Feel free to edit and change any files as you desire to better suit your project :)

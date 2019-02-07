@@ -42,8 +42,6 @@ function state:keypressed(key)
 
 	if key == "r" then
 		_switch = "MENU"
-	else
-    	Util.defaultKeyPressed(key)
 	end
 
 end

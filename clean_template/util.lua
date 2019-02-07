@@ -2,65 +2,9 @@
 
 local util = {}
 
----------------------
---UTILITIES FUNCTIONS
----------------------
-
---Counts how many entries are on table T
-function util.tableLen(T)
-  local count = 0
-
-  if not T then return count end
-  for _ in pairs(T) do count = count + 1 end
-
-  return count
-end
-
---Checks if a tale is empty (true if it doesn't exist)
-function util.tableEmpty(T)
-
-  if not T then return true end
-
-  return not next(T)
-end
-
---Receives a table of timer handles T and a timer TIMER. Cancels every handle from the timer
-function util.clearTimerTable(T, TIMER)
-
-    if not T then return end --If table is empty
-    --Clear T table
-    for _,o in pairs (T) do
-        TIMER.cancel(o)
-    end
-
-end
-
---Return a random element from a given table.
---You can give an optional table argument 'tp', so it only returns elements that share a type with the table strings
---Obs: if you provide a tp table, and there isn't any suitable element available, the program will be trapped here forever (FIX THIS SOMETIME)
-function util.randomElement(T, tp)
-    local e
-
-    while not e do
-        e = T[love.math.random(util.tableLen(T))] --Get random element
-
-        --If tp table isn't empty, compare
-        if not util.tableEmpty(tp) then
-            for i, k in pairs(tp) do
-                if k == e.tp then
-                    return e
-                end
-            end
-            e = nil
-        end
-    end
-
-    return e
-end
-
---------------
---FIND OBJECTS
---------------
+----------------
+--FIND OBJECTS--
+----------------
 
 --Find an object based on an id
 function util.findId(id)
@@ -85,68 +29,14 @@ end
 
 --Set an atribute 'att' from an element with a given 'id' to 'value'
 function util.setAtributeId(id, att, value)
-  for o in pairs(ID_TABLE) do
-    if o.id == id then
-      o[att] = value
-      return
-    end
-  end
+    ID_TABLE[id][att] = value
 end
 
---Set an atribute 'att' in all element with a given subtype 'st' to 'value'
+--Set an atribute 'att' in all elements with a given subtype 'st' to 'value'
 function util.setAtributeSubtype(st, att, value)
   for o in pairs(SUBTP_TABLE[st]) do
     o[att] = value
   end
-end
-
---------------------
---UPDATE FUNCTIONS
---------------------
-
---Update all objects in a table
-function util.updateTable(dt, T)
-
-    if not T then return end
-    for o in pairs(T) do
-        if o.update then
-            o:update(dt)
-        end
-    end
-
-end
-
---Update all objects with a subtype sb
-function util.updateSubtype(dt, sb)
-    util.updateTable(dt, SUBTP_TABLE[sb])
-end
-
---Update an object with an id
-function util.updateId(dt, id)
-    local o
-
-    o = util.findId(id)
-
-    if not o then return end
-
-    o:update(dt)
-
-end
-
---Update all timers
-function util.updateTimers(dt)
-
-    MAIN_TIMER:update(dt)
-
-end
-
---Update all objects in the draw tables
-function util.updateDrawTable(dt)
-
-	for _,T in pairs(DRAW_TABLE) do
-		util.updateTable(dt, T)
-	end
-
 end
 
 ---------------------
@@ -216,39 +106,111 @@ function util.destroyAll(mode)
 
 end
 
----------------------
---UTILITY FUNCTIONS--
----------------------
+------------------
+--UPDATE OBJECTS--
+------------------
 
---Exit program
-function util.exit()
+--Update all objects in a table
+function util.updateTable(dt, T)
 
-    love.event.quit()
-
-end
-
---Toggle debug mode
-function util.toggleDebug()
-
-    DEBUG = not DEBUG
-    print("DEBUG is", DEBUG)
-
-end
-
---------------------
---GLOBAL FUNCTIONS--
---------------------
-
---Get any key that is pressed and checks for generic events
-function util.defaultKeyPressed(key)
-
-    if  key == 'escape' then
-        util.exit()
-    elseif key == 'f1' then
-        util.toggleDebug()
+    if not T then return end
+    for o in pairs(T) do
+        if o.update then
+            o:update(dt)
+        end
     end
 
 end
+
+--Update all objects with a subtype sb
+function util.updateSubtype(dt, sb)
+    util.updateTable(dt, SUBTP_TABLE[sb])
+end
+
+--Update an object with an id
+function util.updateId(dt, id)
+    local o
+
+    o = util.findId(id)
+
+    if not o then return end
+
+    o:update(dt)
+
+end
+
+--Update all timers
+function util.updateTimers(dt)
+
+    MAIN_TIMER:update(dt)
+
+end
+
+--Update all objects in the draw tables
+function util.updateDrawTable(dt)
+
+	for _,T in pairs(DRAW_TABLE) do
+		util.updateTable(dt, T)
+	end
+
+end
+
+---------------------
+--TABLE FUNCTIONS
+---------------------
+
+--Counts how many entries are on table T
+function util.tableLen(T)
+  local count = 0
+
+  if not T then return count end
+  for _ in pairs(T) do count = count + 1 end
+
+  return count
+end
+
+--Checks if a tale is empty (true if it doesn't exist)
+function util.tableEmpty(T)
+
+  if not T then return true end
+
+  return not next(T)
+end
+
+--Return a random element from a given table.
+--You can give an optional table argument 'tp', so it only returns elements that share a type with the table strings
+--Obs: if you provide a tp table, and there isn't any suitable element available, the program will be trapped here forever (FIX THIS SOMETIME)
+function util.randomElement(T, tp)
+    local e
+
+    while not e do
+        e = T[love.math.random(util.tableLen(T))] --Get random element
+
+        --If tp table isn't empty, compare
+        if not util.tableEmpty(tp) then
+            for i, k in pairs(tp) do
+                if k == e.tp then
+                    return e
+                end
+            end
+            e = nil
+        end
+    end
+
+    return e
+end
+
+--Receives a table of timer handles T and a timer TIMER. Cancels every handle from the timer
+function util.clearTimerTable(T, TIMER)
+
+    if not T then return end --If table is empty
+    --Clear T table
+    for _,o in pairs (T) do
+        TIMER.cancel(o)
+    end
+
+end
+
 
 --Return functions
 return util
