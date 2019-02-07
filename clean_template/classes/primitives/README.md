@@ -1,7 +1,6 @@
 # Primitive Classes
-Place here classes files
 
-*Primitive.lua* already contains several base classes to inherit from. Create separate files for specific classes, but try to suppress code by inheriting primitive classes. More info:
+Here are some primitive classes to inherete from, the most important being *ELEMENT*. Create separate files for specific classes, but try to suppress code by inheriting primitive classes. More info:
 
 **ELEMENT**:
 Basic class that can have a type, subtype and id, used mostly for drawing.
