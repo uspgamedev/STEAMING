@@ -119,6 +119,13 @@ local Element = Class {
 
         timer:cancel(self.timers[timer][label])
 
+    end,
+    
+    --Return a specific timer handle
+    getTimer = function(self, label, timer)
+        
+        return self.timers[timer][label]
+    
     end
 }
 
