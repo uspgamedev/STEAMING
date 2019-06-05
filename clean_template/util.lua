@@ -51,7 +51,12 @@ function util.destroyTable(T, mode)
 
     if not T then return end
     for o in pairs(T) do
-        if o.death or mode == "force" then o:destroy() end
+        if o.death or
+	   mode == "true_force" or
+	   (mode == "force" and not o.exception)
+	then
+	   o:destroy()
+        end
     end
 
 end
