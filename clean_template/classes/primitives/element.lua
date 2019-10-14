@@ -124,7 +124,7 @@ local Element = Class {
     --Return a specific timer handle
     getTimer = function(self, label, timer)
         
-        return self.timers[timer][label]
+        return self.timers[timer] and self.timers[timer][label]
     
     end
 }
