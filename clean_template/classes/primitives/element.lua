@@ -118,6 +118,7 @@ local Element = Class {
         if not self.timers[timer] or not self.timers[timer][label] then return end
 
         timer:cancel(self.timers[timer][label])
+        self.timers[timer][label] = nil
 
     end,
     
