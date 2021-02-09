@@ -1,20 +1,16 @@
 --[[
 Copyright (c) 2010-2013 Matthias Richter
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
-
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
 other dealings in this Software without prior written authorization.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -74,8 +70,13 @@ function GS.current()
 	return stack[#stack]
 end
 
+-- XXX: don't overwrite love.errorhandler by default:
+--      this callback is different than the other callbacks
+--      (see http://love2d.org/wiki/love.errorhandler)
+--      overwriting thi callback can result in random crashes (issue #95)
+local all_callbacks = { 'draw', 'update' }
+
 -- fetch event callbacks from love.handlers
-local all_callbacks = { 'draw', 'errhand', 'update' }
 for k in pairs(love.handlers) do
 	all_callbacks[#all_callbacks+1] = k
 end
